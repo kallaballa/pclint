@@ -31,8 +31,8 @@ ${GCH}: %.gch: ${HEADERS}
 	${CXX} ${CXXFLAGS} -o $@ -c ${@:.gch=.hpp}
 
 install:
-	mkdir -p ${DESTDIR}/${PREFIX}
-	cp ${TARGET} ${DESTDIR}/${PREFIX}
+	mkdir -p ${DESTDIR}/${PREFIX}/bin
+	cp ${TARGET} ${DESTDIR}/${PREFIX}/bin
 
 uninstall:
 	rm ${DESTDIR}/${PREFIX}/${TARGET}
@@ -40,5 +40,5 @@ uninstall:
 clean:
 	rm -f *~ ${DEPS} ${OBJS} ${CUO} ${GCH} ${TARGET} 
 
-distclean: clean
+distclean: uninstall
 
