@@ -59,7 +59,7 @@ const char *MAGIC = "\x1b%-12345X@PJL JOB NAME=";
 
 class PclInstr {
 public:
-  PclInstr(off64_t file_off) : type(255), prefix(255), suffix(255), keysep('\0'), value(0), pos(0), limit(0), file_off(file_off), hasValue(false), hasData(false) {}
+  PclInstr(off64_t file_off) : type(127), prefix(127), suffix(127), keysep('\0'), value(0), data(NULL), pos(0), limit(0), file_off(file_off), hasValue(false), hasData(false) {}
   char type;
   char prefix;
   char suffix;

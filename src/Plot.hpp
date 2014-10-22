@@ -108,6 +108,10 @@ public:
     while(isalpha(c = this->inputfile->get()))
       ss << c;
 
+    if(c == '-') {
+      this->invalidate("illegal dash character encountered");
+    }
+
     if (ss.str().length() == 0 && isdigit(c)) {
       instr->operation = HPGL_MOVE;
     } else {
