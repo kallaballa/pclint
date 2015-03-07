@@ -64,7 +64,7 @@ public:
   char prefix;
   char suffix;
   char keysep; // separate the instr signature from value/data so it may be interpreted as a string and used as key
-  int32_t value;
+  int64_t value;
   uint8_t * data;
   uint16_t pos;
   uint16_t limit;

@@ -44,6 +44,8 @@ public:
   Run(): lineLen(0), linePos(0), length(0) {}
 
   Run* init(PclInstr* yInstr, PclInstr* xInstr, PclInstr* pixelLen,  PclInstr* dataInstr) {
+    assert(yInstr->value >= 0 && yInstr->value < std::numeric_limits<uint32_t>().max());
+
     this->loc.y = yInstr->value;
     if(xInstr->value % 8 > 0)
       Trace::singleton()->warn("x is not a multiple of 8!");

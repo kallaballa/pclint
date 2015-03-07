@@ -17,7 +17,6 @@ debug: ${TARGET}
 info: ${TARGET}
 profile: ${TARGET}
 hardcore: ${TARGET}
-
 ${TARGET}: ${OBJS}
 	${CXX} ${LDFLAGS} -o $@ $^ ${LIBS}
 
@@ -33,6 +32,8 @@ ${GCH}: %.gch: ${HEADERS}
 install:
 	mkdir -p ${DESTDIR}/${PREFIX}/bin
 	cp ${TARGET} ${DESTDIR}/${PREFIX}/bin
+
+debian-install: install
 
 uninstall:
 	rm ${DESTDIR}/${PREFIX}/${TARGET}

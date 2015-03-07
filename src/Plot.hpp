@@ -249,7 +249,7 @@ public:
     return this->settings.find(signature) != settings.end();
   }
 
-  uint32_t setting(string signature) {
+  int64_t setting(string signature) {
     return this->settings[signature]->value;
   }
 
@@ -262,7 +262,7 @@ public:
     return this->valid && this->inputfile->good();
   }
 
-  int32_t* readValue(uint8_t& bufferOff) {
+  int64_t* readValue(uint8_t& bufferOff) {
     stringstream ss;
     char digit;
 
@@ -273,8 +273,8 @@ public:
     string strval = ss.str();
 
     if (strval.size() > 0) {
-      int32_t* val = new int32_t();
-      *val = static_cast<int32_t> (strtoll(strval.c_str(), NULL, 10));
+      int64_t* val = new int64_t();
+      *val = static_cast<int64_t> (strtoll(strval.c_str(), NULL, 10));
       return val;
     }
     return NULL;
@@ -296,7 +296,7 @@ public:
     this->currentInstr = instr;
     instr->type = buffer[bufferOff++];
     instr->prefix = buffer[bufferOff++];
-    int32_t * pval = readValue(bufferOff);
+    int64_t * pval = readValue(bufferOff);
     instr->suffix = buffer[bufferOff++];
 
     if (pval != NULL) {
@@ -315,7 +315,10 @@ public:
       return NULL;
     } else if (instr->matches(PCL_RLE_DATA)) {
       // copy data part of rle instructions
+      //FIXME value is a int64_t, what is our upper limit for the data array?
       instr->data = new uint8_t[instr->value];
+
+      assert(instr->value > 0 && instr->value < std::numeric_limits<uint16_t>().max());
       instr->limit = instr->value;
       instr->hasData = true;
 
@@ -346,9 +349,9 @@ private:
   PclPlot *currentPclPlot;
   HpglPlot *currentHpglPlot;
   bool valid;
-  uint32_t width;
-  uint32_t height;
-  uint16_t resolution;
+  int64_t width;
+  int64_t height;
+  int64_t resolution;
 
   void readRTLIntro() {
     char* buffer = new char[MAGIC_SIZE];

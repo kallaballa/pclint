@@ -65,6 +65,7 @@ void Canvas::drawCut(coord x0, coord y0, coord x1, coord y1) {
     lineRGBA(screen, x0, y0, x1, y1, 255, 0, 0, 128);
   }
 #endif
+  update();
 }
 
 void Canvas::update() {

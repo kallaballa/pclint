@@ -203,7 +203,7 @@ public:
     Point from = pos;
     from.x *= 8;
     Point to = from;
-    int delta = len * 8 - 1 * dir;
+    int delta = (len * 8) - (1 * dir);
     if (int(from.x) + delta < 0) {
       Debugger::getInstance()->waitSteps();
       if (!Debugger::getInstance()->isInteractive()) assert(false);
