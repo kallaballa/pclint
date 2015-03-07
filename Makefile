@@ -7,7 +7,7 @@ endif
 CXX      := g++
 CXXFLAGS := -pthread -fno-strict-aliasing -std=c++0x -pedantic -Wall `pkg-config --cflags x11 sdl`
 LDFLAGS  := -L/opt/local/lib
-LIBS     := -lm `pkg-config --libs x11 sdl` -lboost_system$(BOOST_MT) -lboost_thread$(BOOST_MT)
+LIBS     := -lpthread -lm `pkg-config --libs x11 sdl` -lboost_system$(BOOST_MT) -lboost_thread$(BOOST_MT)
 .PHONY: all release debian-release info debug clean debian-clean distclean 
 DESTDIR := /
 PREFIX := /usr/local
@@ -19,6 +19,9 @@ ifeq ($(UNAME_S), Darwin)
  LDFLAGS += -L/opt/local/lib # MacPorts Boost doesn't come with pkgconfig
  CXXFLAGS += -stdlib=libc++ 
  LDFLAGS += -stdlib=libc++ 
+else
+ CXXFLAGS+= -DPCLINT_USE_SDL
+ LIBS += `pkg-config --libs SDL_gfx`
 endif
 
 ifeq ($(MACHINE), x86_64)
@@ -96,6 +99,9 @@ debian-release:
 
 debian-clean:
 	${MAKE} -C src/ -${MAKEFLAGS} CXX=${CXX} NVCC="${NVCC}" NVCC_HOST_CXX="${NVCC_HOST_CXX}" NVCC_CXXFLAGS="${NVCC_CXXFLAGS}" clean
+
+debian-install: ${TARGET}
+	${MAKE} -C src/ -${MAKEFLAGS} CXX=${CXX} NVCC="${NVCC}" NVCC_HOST_CXX="${NVCC_HOST_CXX}" NVCC_CXXFLAGS="${NVCC_CXXFLAGS}" install
 
 install: ${TARGET}
 	${MAKE} -C src/ ${MAKEFLAGS} CXX=${CXX} NVCC="${NVCC}" NVCC_HOST_CXX="${NVCC_HOST_CXX}" NVCC_CXXFLAGS="${NVCC_CXXFLAGS}" ${MAKECMDGOALS} install
