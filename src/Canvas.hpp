@@ -2,11 +2,6 @@
 #define CANVAS_H_
 
 #include <algorithm>
-#ifdef PCLINT_USE_SDL
-#include <SDL.h>
-#include <SDL_gfxPrimitives.h>
-#include <SDL_image.h>
-#endif
 #include "2D.hpp"
 #include <string>
 #include "CImg.hpp"

@@ -1,4 +1,10 @@
 #include "Canvas.hpp"
+#ifdef PCLINT_USE_SDL
+#include <SDL.h>
+#include <SDL_gfxPrimitives.h>
+#include <SDL_image.h>
+#endif
+#include <SDL/SDL.h>
 
 Canvas::Canvas(dim bedWidth, dim bedHeight, dim screenWidth, dim screenHeight,
     BoundingBox* clip) :
@@ -31,8 +37,18 @@ Canvas::Canvas(dim bedWidth, dim bedHeight, dim screenWidth, dim screenHeight,
   scale = std::min(scale_x, scale_y);
 }
 
+void checkExit() {
+#ifdef PCLINT_USE_SDL
+  SDL_Event event;
+  if(SDL_PollEvent(&event) && event.type == SDL_QUIT) {
+    exit(0);
+  }
+#endif
+}
+
 void Canvas::drawPixel(coord x0, coord y0, uint8_t r,uint8_t g,uint8_t b) {
 #ifdef PCLINT_USE_SDL
+  checkExit();
   if(screen != NULL) {
     scaleCoordinate(x0);
     scaleCoordinate(y0);
@@ -44,6 +60,7 @@ void Canvas::drawPixel(coord x0, coord y0, uint8_t r,uint8_t g,uint8_t b) {
 
 void Canvas::drawMove(coord x0, coord y0, coord x1, coord y1) {
 #ifdef PCLINT_USE_SDL
+  checkExit();
   if(screen != NULL) {
     scaleCoordinate(x0);
     scaleCoordinate(y0);
@@ -57,6 +74,7 @@ void Canvas::drawMove(coord x0, coord y0, coord x1, coord y1) {
 void Canvas::drawCut(coord x0, coord y0, coord x1, coord y1) {
   offscreen.draw_line(x0, y0, x1, y1, this->intensity);
 #ifdef PCLINT_USE_SDL
+  checkExit();
   if(screen != NULL) {
     scaleCoordinate(x0);
     scaleCoordinate(y0);
@@ -70,6 +88,7 @@ void Canvas::drawCut(coord x0, coord y0, coord x1, coord y1) {
 
 void Canvas::update() {
 #ifdef PCLINT_USE_SDL
+  checkExit();
   if(screen != NULL) {
     SDL_Flip(screen);
   }
