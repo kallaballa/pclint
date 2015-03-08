@@ -48,7 +48,7 @@ public:
   bool matches(const string& signature, bool report=false) {
     bool m = strcmp(operation.c_str(), signature.c_str()) == 0;
     if(!m && report)
-      cerr << "expected: " << signature << " found: " << this << endl;
+      cerr << "expected: " << signature << " found: " << operation << endl;
 
     return m;
   }
